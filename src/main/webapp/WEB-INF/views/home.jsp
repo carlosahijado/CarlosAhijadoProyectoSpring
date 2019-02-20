@@ -6,9 +6,11 @@
 </head>
 <body>
 <h1>
-	Hola desde el portatil por segunda vez!!  
+	Proyecto Spring Carlos Ahijado  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+<P><a href="listarregiones">Listar las regiones</a></P>
+<P><a href="listaroficinas">Listar las oficinas</a></P>
+<P><a href="gestionrep">Gestionar Representantes</a></P>
 </body>
 </html>
