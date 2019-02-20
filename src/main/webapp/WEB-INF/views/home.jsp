@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>
-	Hola desde el sobremesa!!  
+	Hola desde el portatil por segunda vez!!  
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
