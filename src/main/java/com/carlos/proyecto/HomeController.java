@@ -100,6 +100,8 @@ public class HomeController {
 		boolean insertar = WebUtils.hasSubmitParameter(request, "insertar");
 		boolean volver = WebUtils.hasSubmitParameter(request, "volver");
 		boolean listar = WebUtils.hasSubmitParameter(request, "listar");
+		boolean borrar = WebUtils.hasSubmitParameter(request, "borrar");
+		boolean modificar = WebUtils.hasSubmitParameter(request, "modificar");
 		if(volver)
 		{
 			return "home";
@@ -114,6 +116,18 @@ public class HomeController {
 			Operaciones op = new Operaciones();
 			Connection cn = op.conexionmysql();
 			mensaje=op.insertar(rep,cn);
+		}
+		if(borrar)
+		{
+			Operaciones op = new Operaciones();
+			Connection cn = op.conexionmysql();
+			mensaje=op.borrar(rep.getNumero_rep(), cn);
+		}
+		if(modificar)
+		{
+			Operaciones op = new Operaciones();
+			Connection cn = op.conexionmysql();
+			mensaje=op.modificar(rep, cn);
 		}
 		modelo.addAttribute("mensaje", mensaje);
 		return "gestionrepresentantes";
