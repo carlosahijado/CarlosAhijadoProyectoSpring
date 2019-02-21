@@ -50,12 +50,11 @@ public class Operaciones {
 	public ArrayList<Oficinas> listaroficinas(Connection cn)
 	{
 		ArrayList<Oficinas> listaoficinas = new ArrayList<Oficinas>();
-		String consulta = "SELECT oficinas.OFICINA, oficinas.CIUDAD, regiones.nombre_re AS REGION, COUNT(repventas.numero_rep) AS NUMREP, director.nombre AS DIRECTOR "
-				+ "FROM oficinas "
-				+ "INNER JOIN regiones ON oficinas.cod_region = regiones.cod_region "
-				+ "LEFT JOIN repventas ON oficinas.oficina = repventas.oficina_rep "
-				+ "LEFT JOIN repventas director ON oficinas.director = director.numero_rep "
-				+ "GROUP BY oficinas.oficina, oficinas.ciudad, regiones.nombre_re, director.nombre";
+		String consulta = "SELECT o.oficina, o.ciudad, r.nombre_re, count(rv.numero_rep), rvdirector.nombre "
+				+ "FROM oficinas o INNER JOIN regiones r ON o.cod_region = r.cod_region "
+				+ "LEFT JOIN repventas rv ON o.oficina = rv.oficina_rep "
+				+ "LEFT JOIN repventas rvdirector ON o.director = rvdirector.numero_rep "
+				+ "GROUP BY o.oficina, o.ciudad, r.nombre_re, rvdirector.nombre";
 		
 		try {
 			Statement sentencia = cn.createStatement();
@@ -88,14 +87,14 @@ public class Operaciones {
 			res.next();
 			cont = res.getInt(1);
 			if (cont > 0) {
-				mensaje = "<h2>El representante ya existe en la BD.</h2>";
+				mensaje = "<h2 class='text-center text-danger'>El representante ya existe en la BD.</h2>";
 				sentencia.close();
 				res.close();
 			}
 
 		} catch (SQLException e) {
 			System.out.println("ERROR AL COMPROBAR");
-			mensaje = "<h2>ERROR AL COMPROBAR SI EXISTE</h2>";
+			mensaje = "<h2 class='text-center text-danger'>ERROR AL COMPROBAR SI EXISTE</h2>";
 			cont = 9;
 
 			 e.printStackTrace();
@@ -113,12 +112,12 @@ public class Operaciones {
 				sent.setInt(6, rep.getNum_ventas());
 				sent.setDouble(7, rep.getImp_ventas());
 				int res = sent.executeUpdate();
-				mensaje = "<h2>Registro insertado correctamente</h2>";
+				mensaje = "<h2 class='text-center text-success'>Registro insertado correctamente</h2>";
 				sent.close();
 	
 			} catch (SQLException e) {
 				System.out.println("ERROR AL CARGAR LOS REPRESENTANTES EN LA LISTA");
-				mensaje = "<h2>ERROR AL CARGAR LOS REPRESENTANTES EN LA LISTA</h2>";
+				mensaje = "<h2 class='text-center text-danger'>ERROR AL CARGAR LOS REPRESENTANTES EN LA LISTA</h2>";
 				// e.printStackTrace();
 			}
 		}
@@ -182,7 +181,7 @@ public class Operaciones {
 			res.close();
 			sentencia.close();
 		} catch (SQLException e) {
-			System.out.println("ERROR AL CARGAR LOS REPRESENTANTES EN LA LISTA");
+			System.out.println("<h2 class='text-center text-danger'>ERROR AL CARGAR LOS REPRESENTANTES EN LA LISTA</h2>");
 			// e.printStackTrace();
 		}
 		return listarep;
@@ -197,14 +196,14 @@ public class Operaciones {
 		sentencia.setInt(1, numero_rep);
 		int nn = sentencia.executeUpdate();
 		if (nn==1)
-		   mensaje = "<h2>Representante borrado correctamente</h2>";
+		   mensaje = "<h2 class='text-center text-success'>Representante borrado correctamente</h2>";
 		else
-			mensaje = "<h2>Comprueba si se ha borrado.</h2>";
+			mensaje = "<h2 class='text-center text-warning'>Comprueba si se ha borrado.</h2>";
 		
 		sentencia.close();
 		} catch (SQLException e) {
 			System.out.println("ERROR AL CARGAR EL REPRESENTANTE");
-			mensaje = "<h2>ERROR AL CARGAR EL REPRESENTANTE A BORRAR</h2>";
+			mensaje = "<h2 class='text-center text-danger'>ERROR AL CARGAR EL REPRESENTANTE A BORRAR</h2>";
 			// e.printStackTrace();
 		}
 
@@ -226,14 +225,14 @@ public class Operaciones {
 			sent.setInt(7, rep.getNumero_rep());
 			int res = sent.executeUpdate();
 			if (res == 1)
-			     mensaje = "<h2>Registro ACTUALIZADO correctamente</h2>";
+			     mensaje = "<h2 class='text-center text-success'>Registro ACTUALIZADO correctamente</h2>";
 			else
-			     mensaje = "<h2>Comprueba la actualización</h2>";
+			     mensaje = "<h2 class='text-center text-warning'>Comprueba la actualización</h2>";
 			sent.close();
 
 		} catch (SQLException e) {
 			System.out.println("ERROR MODIFICAR");
-			mensaje = "<h2>ERROR AL CARGAR LIBRO A MODIFICAR</h2>";
+			mensaje = "<h2 class='text-center text-danger'>ERROR AL CARGAR REPRESENTANTE A MODIFICAR</h2>";
 			// e.printStackTrace();
 		}
 		
