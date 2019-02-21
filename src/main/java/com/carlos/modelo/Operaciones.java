@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Operaciones {
 
@@ -72,6 +74,7 @@ public class Operaciones {
 		return listaoficinas;
 	}
 	
+	//insertar representante
 	public String insertar(Repventas rep, Connection cn)
 	{
 		String mensaje="";
@@ -123,7 +126,9 @@ public class Operaciones {
 		}
 		return mensaje;
 	}
+	//-------------------------------------------------------------
 	
+	//listado de representantes
 	public ArrayList<Repventas> listarrepresentantes(Connection cn)
 	{
 		ArrayList<Repventas> listarep = new ArrayList<Repventas>();
@@ -144,49 +149,9 @@ public class Operaciones {
 		}
 		return listarep;
 	}
+	//------------------------------------------------------
 	
-	public ArrayList<Integer> listarnombreoficinas(Connection cn)
-	{
-		ArrayList<Integer> listaoficinas = new ArrayList<Integer>();
-		String consulta = "SELECT oficina FROM oficinas";
-		
-		try {
-			Statement sentencia = cn.createStatement();
-			ResultSet res = sentencia.executeQuery(consulta);
-			while (res.next()) {
-				int ofi = res.getInt("oficina");
-				listaoficinas.add(ofi);
-			}
-			res.close();
-			sentencia.close();
-		} catch (SQLException e) {
-			System.out.println("ERROR AL CARGAR LAS OFICINAS EN LA LISTA");
-			// e.printStackTrace();
-		}
-		return listaoficinas;
-	}
-
-	public ArrayList<Integer> listarnumerorep(Connection cn)
-	{
-		ArrayList<Integer> listarep = new ArrayList<Integer>();
-		String consulta = "SELECT numero_rep FROM repventas";
-		
-		try {
-			Statement sentencia = cn.createStatement();
-			ResultSet res = sentencia.executeQuery(consulta);
-			while (res.next()) {
-				int rep = res.getInt("numero_rep");
-				listarep.add(rep);
-			}
-			res.close();
-			sentencia.close();
-		} catch (SQLException e) {
-			System.out.println("<h2 class='text-center text-danger'>ERROR AL CARGAR LOS REPRESENTANTES EN LA LISTA</h2>");
-			// e.printStackTrace();
-		}
-		return listarep;
-	}
-	
+	//función para borrar representante
 	public String borrar(int numero_rep, Connection cn) {
 		String consulta = "delete from repventas where numero_rep= ? ";
 		String mensaje="";
@@ -209,7 +174,9 @@ public class Operaciones {
 
 		return mensaje;
 	}
+	//----------------------------------------
 	
+	//modificar representante
 	public String modificar(Repventas rep, Connection cn) {
 		String consulta = "update repventas  set nombre=?, edad = ?, oficina_rep=? , director=?, num_ventas=?, imp_ventas=? where numero_rep= ? ";
 		String mensaje="";
@@ -239,4 +206,51 @@ public class Operaciones {
 		
 		return mensaje;
 	}
+	//-----------------------------------------------
+	
+	//Sacar listado de directores para mostrarlos en el select
+	public Map<Integer, String> listarnumerorep(Connection cn) {
+		Map<Integer, String> representantes = new HashMap<Integer, String>();
+		String consulta = "SELECT numero_rep, nombre FROM repventas";
+		
+		try {	
+			Statement sentencia = cn.createStatement();
+			ResultSet res = sentencia.executeQuery(consulta);
+
+			while(res.next()) {
+				representantes.put(res.getInt("numero_rep"), res.getString("nombre"));
+			}
+			res.close();
+			sentencia.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		
+		return representantes;
+	}
+	//--------------------------------------------------------
+	
+	//sacar listado de oficinas para mostrarlos en el select
+	public Map<Integer, String> listarnombreoficina(Connection cn) {
+		Map<Integer, String> oficinas = new HashMap<Integer, String>();
+		String consulta = "SELECT oficinas.OFICINA, oficinas.CIUDAD FROM oficinas";
+		
+		try {	
+			Statement sentencia = cn.createStatement();
+			ResultSet res = sentencia.executeQuery(consulta);
+			
+			while(res.next()) {
+				oficinas.put(res.getInt("OFICINA"), res.getString("CIUDAD"));
+			}
+			res.close();
+			sentencia.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		
+		return oficinas;
+	}
+	//----------------------------------------------------------
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,6 +54,7 @@ public class HomeController {
 		return "home";
 	}
 	
+	//LISTAR LAS REGIONES
 	@RequestMapping(value="/listarregiones", method = RequestMethod.GET)
 	public String listaregiones(Model modelo){
 		Operaciones op = new Operaciones();
@@ -62,6 +64,7 @@ public class HomeController {
 		return "listadoregiones" ;
 	}
 	
+	//LISTAR LAS OFICINAS
 	@RequestMapping(value="/listaroficinas", method = RequestMethod.GET)
 	public String listaoficinas(Model modelo){
 		Operaciones op = new Operaciones();
@@ -71,6 +74,7 @@ public class HomeController {
 		return "listadooficinas" ;
 	}
 	
+	//LISTAR LOS REPRESENTANTES
 	@RequestMapping(value="/listarrepresentantes", method = RequestMethod.GET)
 	public String listarepresentantes(Model modelo){
 		Operaciones op = new Operaciones();
@@ -133,22 +137,22 @@ public class HomeController {
 		return "gestionrepresentantes";
 		
 	}
-	
-	@ModelAttribute("listaoficinas")
-	 public ArrayList<Integer> listaOficinas() {
-		  Operaciones op = new Operaciones();
-		  Connection cn = op.conexionmysql();
-		  ArrayList<Integer> lista = op.listarnombreoficinas(cn);	  
-		  return lista;
-	 }
-	
+
+	//LISTA DIRECTORES Y OFICINAS PARA LOS SELECT DE LA VISTA
 	@ModelAttribute("listarep")
-	 public ArrayList<Integer> listaRepresentantes() {
-		  Operaciones op = new Operaciones();
-		  Connection cn = op.conexionmysql();
-		  ArrayList<Integer> lista = op.listarnumerorep(cn);	  
-		  return lista;
-	 }
+	public String listaRepresentantes(Model model) {
+		
+		Operaciones op = new Operaciones();
+		Connection cn = op.conexionmysql();
+		
+		Map<Integer, String> oficinas = op.listarnombreoficina(cn);
+		Map<Integer, String> directores = op.listarnumerorep(cn);
+		
+		model.addAttribute("oficinas", oficinas);
+		model.addAttribute("directores", directores);
+
+		return "gestionrepresentantes";
+	}
 	
 	@RequestMapping(value="/volver", method = RequestMethod.POST)
 	public String volver(Model modelo){

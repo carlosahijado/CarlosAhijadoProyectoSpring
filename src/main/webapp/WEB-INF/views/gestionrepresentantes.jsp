@@ -40,7 +40,7 @@
 				<label>Oficina del Representante:</label>
 					<miform:select path="oficina_rep" class="form-control">
 							<miform:option value="0" label="Selecciona oficina" />
-							  <miform:options items="${listaoficinas}" />
+							  <miform:options items="${oficinas}" />
 							</miform:select>
 		
 			</div>
@@ -48,7 +48,7 @@
 				<label>Director del Representante:</label>
 					<miform:select path="director" class="form-control">
 							<miform:option value="0" label="Selecciona el director" />
-							  <miform:options items="${listarep}" />
+							  <miform:options items="${directores}" />
 							</miform:select>
 			</div>
 		</div>
